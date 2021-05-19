@@ -8,4 +8,5 @@ import com.ecommerce.model.Customer;
 public interface CustomerDAO {	
 	
 	long saveCustomer(Customer customer);
+	Customer getCustomerByEmailId(String email);
 }

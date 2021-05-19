@@ -12,7 +12,6 @@ import com.ecommerce.DAO.OrderDAO;
 import com.ecommerce.DAO.OrderItemDAO;
 import com.ecommerce.dto.Purchase;
 import com.ecommerce.dto.PurchaseResponse;
-import com.ecommerce.model.Address;
 import com.ecommerce.model.Customer;
 import com.ecommerce.model.Order;
 import com.ecommerce.model.OrderItem;
@@ -65,7 +64,16 @@ public class CheckoutServiceImpl implements CheckoutService{
 		
 		//save to database	
 		//long customerId = saveCustomer(customer);
-		long customerId = customerDAO.saveCustomer(customer);
+		long customerId = 0;
+		String email = customer.getEmail();
+		Customer getExistingCustomer = customerDAO.getCustomerByEmailId(email);
+		if(getExistingCustomer != null) {
+			customerId = getExistingCustomer.getId();
+		}
+		else {
+			customerId = customerDAO.saveCustomer(customer);
+		}
+		
 		long billingId = addressDAO.saveAddress(order.getBillingAddress());
 		long shippingId = addressDAO.saveAddress(order.getShippingAddress());
 		System.out.println("Customer id:" + customerId);

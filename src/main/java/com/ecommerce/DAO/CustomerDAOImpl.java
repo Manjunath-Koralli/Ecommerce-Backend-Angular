@@ -52,6 +52,30 @@ public class CustomerDAOImpl implements CustomerDAO {
 		}
 		return temp_cId;
 	}
+
+
+	@Override
+	public Customer getCustomerByEmailId(String email) {
+		// TODO Auto-generated method stub
+		String query = "Select * from Customer c where c.email = ?";
+		try {
+			PreparedStatement st = connection.prepareStatement(query);
+			st.setString(1, email);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				Customer customer = new Customer();
+				customer.setId(rs.getLong(1));
+				customer.setFirstName(rs.getString(2));
+				customer.setLastName(rs.getString(3));
+				customer.setEmail(rs.getString(4));
+				return customer;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 }
