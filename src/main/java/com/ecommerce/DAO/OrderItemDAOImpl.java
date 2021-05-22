@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -15,13 +17,14 @@ import com.ecommerce.util.DBUtil;
 public class OrderItemDAOImpl implements OrderItemDAO{
 	
 	Connection connection = null;
+	private static List<OrderItem> orderItems;
 	{
 		connection = DBUtil.getConnection();
 		//System.out.println(connection);
 	}
 	
 	@Override
-	public void saveOrderItems(OrderItem item, long orderId) {
+	public void saveOrderItems(OrderItem item, Long orderId) {
 		// TODO Auto-generated method stub
 		
 		String select_query = "Select max(id) from order_item";
@@ -33,8 +36,8 @@ public class OrderItemDAOImpl implements OrderItemDAO{
 			ResultSet select_rs = select_stmt.executeQuery(select_query);
 
 			select_rs.next();
-			int item_Id = select_rs.getInt(1);
-			int temp_iId = ++item_Id;			
+			Long item_Id = select_rs.getLong(1);
+			Long temp_iId = ++item_Id;			
 			PreparedStatement pst = connection.prepareStatement("Insert into order_item values(?,?,?,?,?,?)");
 			
 			pst.setLong(1,temp_iId);
@@ -52,6 +55,34 @@ public class OrderItemDAOImpl implements OrderItemDAO{
 			e.printStackTrace();
 		}
 		
+	}
+
+	
+	
+	@Override
+	public List<OrderItem> getOrderItemByOrderid(Long orderId) {
+		// TODO Auto-generated method stub
+		String query = "Select * from order_item where order_id = ?";
+		orderItems = new ArrayList<>();
+		try {
+			PreparedStatement st = connection.prepareStatement(query);
+			st.setLong(1, orderId);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				OrderItem orderItem = new OrderItem();
+				orderItem.setId(rs.getLong(1));
+				orderItem.setImageUrl(rs.getString(2));
+				orderItem.setQuantity(rs.getInt(3));
+				orderItem.setUnitPrice(rs.getBigDecimal(4));
+				orderItem.setOrderId(rs.getLong(5));
+				orderItem.setProductId(rs.getLong(6));
+				orderItems.add(orderItem);
+			}
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return orderItems;
 	}
 
 }

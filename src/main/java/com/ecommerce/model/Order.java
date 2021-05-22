@@ -16,6 +16,9 @@ public class Order {
 	private String status;
 	private Date dateCreated;
 	private Date lastUpdated;
+	private Long customerId;
+	private Long billingAddressId;
+	private Long shippingAddressId;
 	
 	public Long getId() {
 		return id;
@@ -58,8 +61,33 @@ public class Order {
 	}
 	public void setLastUpdated(Date lastUpdated) {
 		this.lastUpdated = lastUpdated;
-	}
+	}	
 	
+
+
+
+
+
+	public Long getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
+	}
+	public Long getBillingAddressId() {
+		return billingAddressId;
+	}
+	public void setBillingAddressId(Long billingAddressId) {
+		this.billingAddressId = billingAddressId;
+	}
+	public Long getShippingAddressId() {
+		return shippingAddressId;
+	}
+	public void setShippingAddressId(Long shippingAddressId) {
+		this.shippingAddressId = shippingAddressId;
+	}
+
+
 	private Set<OrderItem> orderItems = new HashSet<>();
 	public Set<OrderItem> getOrderItems() {
 		return orderItems;
@@ -77,10 +105,11 @@ public class Order {
 		}
 	}
 	
+	
 	private Customer customer;
 	private Address billingAddress;
 	private Address shippingAddress;
-	
+
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -98,7 +127,8 @@ public class Order {
 	}
 	public void setShippingAddress(Address shippingAddress) {
 		this.shippingAddress = shippingAddress;
-	}	
+	}
+		
 	
 	
 }

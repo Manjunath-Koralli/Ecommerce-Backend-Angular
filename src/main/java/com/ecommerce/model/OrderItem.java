@@ -11,6 +11,7 @@ public class OrderItem {
 	private BigDecimal unitPrice;
 	private int quantity;
 	private Long productId;
+	private Long orderId;
 	
 	private Order order;
 	
@@ -50,6 +51,12 @@ public class OrderItem {
 	}
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 	
 	

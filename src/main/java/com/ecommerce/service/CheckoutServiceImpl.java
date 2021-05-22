@@ -1,7 +1,5 @@
 package com.ecommerce.service;
 
-import java.sql.Connection;
-
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -31,12 +29,6 @@ public class CheckoutServiceImpl implements CheckoutService{
 		this.orderDAO = orderDAO;
 		this.orderItemDAO = orderItemDAO;
 	}
-	
-	Connection connection = null;
-	{
-		connection = com.ecommerce.util.DBUtil.getConnection();
-		System.out.println(connection);
-	}
 
 	@Override	
 	public PurchaseResponse placeOrder(Purchase purchase) {
@@ -64,7 +56,7 @@ public class CheckoutServiceImpl implements CheckoutService{
 		
 		//save to database	
 		//long customerId = saveCustomer(customer);
-		long customerId = 0;
+		Long customerId = 0L;
 		String email = customer.getEmail();
 		Customer getExistingCustomer = customerDAO.getCustomerByEmailId(email);
 		if(getExistingCustomer != null) {
@@ -74,8 +66,8 @@ public class CheckoutServiceImpl implements CheckoutService{
 			customerId = customerDAO.saveCustomer(customer);
 		}
 		
-		long billingId = addressDAO.saveAddress(order.getBillingAddress());
-		long shippingId = addressDAO.saveAddress(order.getShippingAddress());
+		Long billingId = addressDAO.saveAddress(order.getBillingAddress());
+		Long shippingId = addressDAO.saveAddress(order.getShippingAddress());
 		System.out.println("Customer id:" + customerId);
 		System.out.println("Billing and Shipping id:" + billingId + " " + shippingId);
 		
@@ -88,7 +80,6 @@ public class CheckoutServiceImpl implements CheckoutService{
 		
 		//return response
 		return new PurchaseResponse(orderTrackingNumber);
-		//return null;
 	}
 	
 	private String generateOrderTrackingNumber(){		

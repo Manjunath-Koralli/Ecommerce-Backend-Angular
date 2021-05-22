@@ -6,5 +6,7 @@ import com.ecommerce.model.Address;
 
 @Repository
 public interface AddressDAO {
-	long saveAddress(Address address);
+	Long saveAddress(Address address);
+	//List<Address> getAddressById(long addressId);
+	Address getAddressById(Long addressId);
 }

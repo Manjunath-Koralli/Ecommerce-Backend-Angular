@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -16,13 +19,14 @@ import com.ecommerce.util.DBUtil;
 public class OrderDAOImpl implements OrderDAO{
 
 	Connection connection = null;
+	private static List<Order> orders;
+	
 	{
 		connection = DBUtil.getConnection();
-		//System.out.println(connection);
 	}
 	
 	@Override
-	public long saveOrder(Order order, long customerId, long billingId, long shippingId) {
+	public long saveOrder(Order order, Long customerId, Long billingId, Long shippingId) {
 		// TODO Auto-generated method stub
 		Date date = new Date();
 		//java.sql.Date d=new java.sql.Date(date.getTime());
@@ -48,8 +52,10 @@ public class OrderDAOImpl implements OrderDAO{
 			pst.setLong(6,customerId);
 			pst.setLong(7,shippingId);
 			pst.setString(8,order.getStatus());
-			pst.setDate(9,new java.sql.Date(date.getTime()));
-			pst.setDate(10,new java.sql.Date(date.getTime()));
+//			pst.setDate(9,new java.sql.Date(date.getTime()));
+//			pst.setDate(10,new java.sql.Date(date.getTime()));
+			pst.setTimestamp(9, new java.sql.Timestamp(date.getTime()));
+			pst.setTimestamp(10, new java.sql.Timestamp(date.getTime()));
 			
 			i = pst.executeUpdate();
 			System.out.println(i + "order records inserted");
@@ -59,6 +65,35 @@ public class OrderDAOImpl implements OrderDAO{
 			e.printStackTrace();
 		}
 		return temp_oId;
+	}
+
+	@Override
+	public List<Order> getOrderByCustomerId(Long customerId) {
+		// TODO Auto-generated method stub
+		String query = "Select * from orders where customer_id = ?";
+		orders = new ArrayList<>();
+		try {
+			PreparedStatement st = connection.prepareStatement(query);
+			st.setLong(1, customerId);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				Order order = new Order();
+				order.setId(rs.getLong(1));
+				order.setOrderTrackingNumber(rs.getString(2));
+				order.setTotalPrice(rs.getBigDecimal(3));
+				order.setTotalQuantity(rs.getInt(4));
+				order.setBillingAddressId(rs.getLong(5));
+				order.setCustomerId(rs.getLong(6));
+				order.setShippingAddressId(rs.getLong(7));
+				order.setDateCreated(rs.getTimestamp(9));
+				
+				orders.add(order);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return orders;
 	}
 
 }

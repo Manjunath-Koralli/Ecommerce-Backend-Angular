@@ -7,6 +7,6 @@ import com.ecommerce.model.Customer;
 @Repository
 public interface CustomerDAO {	
 	
-	long saveCustomer(Customer customer);
+	Long saveCustomer(Customer customer);
 	Customer getCustomerByEmailId(String email);
 }

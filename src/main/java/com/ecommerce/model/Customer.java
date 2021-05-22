@@ -2,15 +2,13 @@ package com.ecommerce.model;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class Customer {
 
-	private Long id;
-	//private UUID id;
+	private Long id;	
 	private String firstName;
 	private String lastName;
 	private String email;	
@@ -57,12 +55,5 @@ public class Customer {
 			order.setCustomer(this);
 		}
 	}
-	
-//	public Customer(UUID id, String firstName, String lastName, String email) {
-//		super();
-//		this.id = id;
-//		this.firstName = firstName;
-//		this.lastName = lastName;
-//		this.email = email;		
-//	}
+
 }

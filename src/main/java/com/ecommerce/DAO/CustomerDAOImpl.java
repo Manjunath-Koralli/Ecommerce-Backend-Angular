@@ -19,22 +19,21 @@ public class CustomerDAOImpl implements CustomerDAO {
 	{
 		connection = DBUtil.getConnection();
 		//System.out.println(connection);
-	}
-	
+	}	
 
 	@Override
-	public long saveCustomer(Customer customer) {
+	public Long saveCustomer(Customer customer) {
 		// TODO Auto-generated method stub
 		String select_query = "Select max(id) from customer";
 		Statement select_stmt;
 		int i=0;
-		int temp_cId = 0;
+		Long temp_cId = 0L;
 		try {
 			select_stmt = connection.createStatement();
 			ResultSet select_rs = select_stmt.executeQuery(select_query);
 
 			select_rs.next();
-			int customer_Id = select_rs.getInt(1);
+			Long customer_Id = select_rs.getLong(1);
 			temp_cId = ++customer_Id;			
 			PreparedStatement pst = connection.prepareStatement("Insert into Customer values(?,?,?,?)");
 			
